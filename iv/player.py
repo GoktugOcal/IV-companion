@@ -42,6 +42,7 @@ class Player:
         
         if self.money >= item_price:
             self.money -= item_price
+            game.case_money += item_price
             game.log_action(
                 player = self,
                 action = "buy",
@@ -96,7 +97,8 @@ class Player:
         if self.money >= amount:
 
             self.money -= amount
-            target.money += amount
+            target.money += int(amount * 0.8)
+            game.case_money += int(amount * 0.2)
 
             game.log_action(
                 player = self,

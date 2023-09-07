@@ -26,6 +26,7 @@ class TheGame:
         history_file=None,
         market_file=None,
         market=None,
+        case_money=None,
         latest_save_time=None,
         load=False
     ):
@@ -57,6 +58,7 @@ class TheGame:
             self.market_file = market_file
 
             self.market = market
+            self.case_money = case_money
 
             self.latest_save_time = latest_save_time
             
@@ -77,7 +79,8 @@ class TheGame:
                 self.market_file = os.path.join(".", "market.json")
                 
                 self.market = json.loads(pd.read_csv("market.csv",delimiter=";").to_json(orient="records"))
-
+                self.case_money = 0
+                
             else:
                 raise Exception("Name is not set for this game. Give a name to the game you have created.")
 

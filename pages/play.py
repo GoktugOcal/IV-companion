@@ -84,7 +84,7 @@ attack_lose = dbc.Button(id = "attack-lose-btn", children="Lose 😭", className
 transfer_button = dbc.Button(id="transfer-button", children="Transfer 💸", color="success", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
 send_button = dbc.Button(id="send-button", children="Send 💸", className="btn-md d-grid gap-2 btn-block")
 # Three Big Buttons
-three_big_button = dbc.Button(id="three-button", children="Three Big 🦣", color="info", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+three_big_button = dbc.Button(id="three-button", children="Three Big 🍆", color="info", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
 
 
 #Alerts
