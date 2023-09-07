@@ -12,15 +12,15 @@ welcome_card = dbc.Card(
     dbc.CardBody(
         [
             html.H1("Welcome to İŞGAL VAKTİ", className="card-title"),
-            html.P("This card has some text content, but not much else"),
+            html.P("Around our table, an intricate realm takes shape as we forge our own world. Through battles and alliances, we compete for supremacy, capturing coal mines and factories to amass wealth. Yet, amid this empire-building, a bustling market tempts us with powerful artifacts and map-enhancing cosmetics. In this enduring saga, we shape our destinies, seeking victory not only in territory but in the artistry of our conquests, a tapestry of strategy and friendship illuminated by a flickering candle's soft glow."),
             dbc.Row([
                 dbc.Col(
-                    dbc.Button(id="play", children="Play the game", color="danger", href="/start_game", className="d-grid gap-2"),
+                    dbc.Button(id="play", children="Play the game", color="danger", href="/start_game", className="btn-lg d-grid gap-2"),
                     width = 6,
                     className = "text-center "
                 ),
                 dbc.Col(
-                    dbc.Button(id="watch", children="Watch a game", color="primary", href="/watch_game", className="d-grid gap-2"),
+                    dbc.Button(id="watch", children="Watch a game", color="primary", href="/watch_game", className="btn-lg d-grid gap-2"),
                     width = 6,
                     className = "text-center"
                 )

@@ -3,14 +3,25 @@ import os
 import numpy as np
 import pandas as pd
 
+# from iv.helper import player_decoder
+
+def player_decoder(json_obj):
+    return Player(
+        **json_obj
+    )
+
 class Player:
-    def __init__(self, name, pid, isBot = False):
+    def __init__(self, name, pid, mines=0, factories=0, hasNavy=False, money=0, three_big_used = False, next_player_pid=None, isBot = False):
         self.name = name
-        self.id = pid
+        self.pid = pid
         self.isBot = isBot
 #         game = game
-        self.three_big_used = False
-        self.money = 0
+        self.three_big_used = three_big_used
+        self.mines = mines
+        self.factories = factories
+        self.hasNavy = hasNavy
+        self.money = money
+        self.next_player_pid = next_player_pid
     
     def set_action(self):
         """
@@ -69,7 +80,6 @@ class Player:
         
         else:
             self.three_big_used = True
-            game.three_big_correction()
             game.log_action(
                 player = self,
                 action = "three_big",
