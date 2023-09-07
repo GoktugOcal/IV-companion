@@ -7,6 +7,12 @@ from iv.game import TheGame
 from iv.player import Player
 
 app.layout = html.Div([
+    dbc.NavbarSimple(
+        brand="İşgal Vakti",
+        brand_href="#",
+        color="primary",
+        dark=True
+        ),    
     dcc.Location(id = "url"),
     html.Div(id='page-content')
 ])

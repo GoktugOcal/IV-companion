@@ -13,6 +13,7 @@ welcome_card = dbc.Card(
         [
             html.H1("Welcome to İŞGAL VAKTİ", className="card-title"),
             html.P("Around our table, an intricate realm takes shape as we forge our own world. Through battles and alliances, we compete for supremacy, capturing coal mines and factories to amass wealth. Yet, amid this empire-building, a bustling market tempts us with powerful artifacts and map-enhancing cosmetics. In this enduring saga, we shape our destinies, seeking victory not only in territory but in the artistry of our conquests, a tapestry of strategy and friendship illuminated by a flickering candle's soft glow."),
+            html.Hr(), 
             dbc.Row([
                 dbc.Col(
                     dbc.Button(id="play", children="Play the game", color="danger", href="/start_game", className="btn-lg d-grid gap-2"),

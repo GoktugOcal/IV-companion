@@ -60,11 +60,7 @@ modal_1 = dbc.Modal(
 #     is_open=False,
 # )
 
-# attack_collapse  =dbc.Collapse(
-#     dbc.Card(dbc.CardBody(id="attack-card")),
-#     id="attack-collapse",
-#     is_open=False,
-# )
+
 
 
 
@@ -75,43 +71,173 @@ round_list = dbc.ListGroup(
 )
 
 next_round_button = dbc.Button(id="next-player", children="Next Player!", color="success", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px", "margin-left": "auto"})
-buy_button = dbc.Button(id="buy-button", children="Buy!", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
-three_big_button = dbc.Button(id="three-button", children="Play Three Big!!", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+buy_button = dbc.Button(id="buy-button", children="Buy!", color="success", className="col-12", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+
+
 
 # Attack Buttons
-attack_button = dbc.Button(id="attack-button", children="Attack ⚔️", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
-final_attack_button = dbc.Button(id="final-attack-button", children="Attack ⚔️", color="danger", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
-attack_win = dbc.Button(id="attack-win-btn", children="Win 🏆", color="success", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
-attack_lose = dbc.Button(id = "attack-lose-btn", children="Lose 😭", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+attack_button = dbc.Button(id="attack-button", children="Attack ⚔️", color="danger", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+final_attack_button = dbc.Button(id="final-attack-button", children="Attack ⚔️", color="danger", className="btn-md d-grid gap-2 btn-block")
+attack_win = dbc.Button(id="attack-win-btn", children="Win 🏆", color="success", className="col-12")
+attack_lose = dbc.Button(id = "attack-lose-btn", children="Lose 😭", className="col-12")
+# Transfer Buttons
+transfer_button = dbc.Button(id="transfer-button", children="Transfer 💸", color="success", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
+send_button = dbc.Button(id="send-button", children="Send 💸", className="btn-md d-grid gap-2 btn-block")
+# Three Big Buttons
+three_big_button = dbc.Button(id="three-button", children="Three Big 🦣", color="info", className="col-4", style={"margin-top" : "5px", "margin-bottom" : "5px"})
 
-transfer_button = dbc.Button(id="transfer-button", children="Transfer Money 💸", className="btn-md d-grid gap-2 btn-block", style={"margin-top" : "5px", "margin-bottom" : "5px"})
 
+#Alerts
 saved_alert = dbc.Alert("Saved.", id="saved-alert", is_open=False, dismissable=True)
-welcome_alert = dbc.Alert("Welcome!", is_open=True)
+welcome_alert = dbc.Alert("Welcome!", is_open=True, style = {"margin-top" : "10px"})
 
 round_list_container = dbc.Row([dbc.Col(round_list), dbc.Col(next_round_button)])
 
+button_group = dbc.ButtonGroup(
+    [
+        three_big_button,
+        attack_button,
+        transfer_button
+    ],
+    className = "col-12"
+)
+
+#######################################################################
+############################## Collapses ##############################
+#######################################################################
+
+win_lose_collapse = dbc.Collapse(
+    children = [
+        dbc.Row(
+            [
+                dbc.Col(attack_win, width=6),
+                dbc.Col(attack_lose, width=6),
+            ],
+        )
+    ],
+    id = "win-lose-collapse",
+    is_open = False,
+    style = {"margin-top" : "5px"}
+)
+attack_collapse = dbc.Collapse(
+    children = [
+        dbc.InputGroup([
+            dbc.Select(id="attack-target-select"),
+            final_attack_button
+        ]),
+        win_lose_collapse
+    ],
+    id="attack-collapse",
+    is_open=False,
+    dimension="width"
+)
+
+
+transfer_collape = dbc.Collapse(
+    children = [
+        dbc.Row(
+            [
+                dbc.InputGroup([
+                    dbc.Select(id="transfer-target-select", placeholder="Select Target"),
+                    dbc.Input(id="transfer-amount", placeholder="Transfer Amount", type="number"),
+                    send_button
+                ]),
+            ]
+        )
+    ],
+    id = "transfer-collapse",
+    is_open = False
+)
+
+
+#######################################################################
+################################ Rows #################################
+#######################################################################
+
+attack_row = html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(attack_button, className="col-4 col-lg-4"),
+                dbc.Col(attack_collapse, className="col-8 col-lg-8")
+            ],
+            className="mx-auto"
+        ),
+        win_lose_collapse
+    ]
+)
+
+transfer_row = html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(transfer_button, className="col-4 col-lg-4"),
+                dbc.Col(transfer_collape, className="col-8 col-lg-8")
+            ]
+        ),
+        win_lose_collapse
+    ]
+)
+
+button_functions = html.Div(
+    [
+        button_group,
+        attack_collapse,
+        transfer_collape
+    ]
+)
+
+
+
+player_table = dash_table.DataTable(id = "the-table", style_table={'overflowX': 'scroll'})
+
+##############################
+##############################
+##############################
+
+button = dbc.Row(
+    [
+        dbc.Col(dbc.Button("Block button", color="primary", className = "col-12"), width = 6),
+        dbc.Col(dbc.Button("Block button", color="secondary", className = "col-12"), width = 6),
+    ],
+    className="mx-auto",
+)
+
 layout = html.Div([
-    html.Div(id='dummy-div'),  # Dummy input
-    html.Div(id='alert-container', children=[welcome_alert]),
-    dbc.Row(
-        [
-            dbc.Col([round_list_container, dash_table.DataTable(id = "the-table"), saved_alert, three_big_button, attack_button], className="col-12 col-lg-7"),
-            dbc.Col([html.Div()], className="col-12 col-lg-1"),
-            dbc.Col([buy_button, dash_table.DataTable(id = "market-table", row_selectable='single')], className="col-12 col-lg-4")
-        ]
-    ),
-    modal_1
+    dbc.Container([
+
+        html.Div(id='dummy-div'),  # Dummy input
+        html.Div(id='alert-container', children=[welcome_alert]),
+        dbc.Row(
+            [
+                dbc.Col([round_list_container, player_table, html.Hr(), saved_alert, button_functions, html.Hr()], className="col-12 col-lg-7"),
+                dbc.Col([html.Div()], className="col-12 col-lg-1"),
+                dbc.Col([buy_button, dash_table.DataTable(id = "market-table", row_selectable='single')], className="col-12 col-lg-4")
+            ]
+        ),
+        modal_1
+
+    ])
+    
 ])
 
+##############################
+##############################
+##############################
+
+
+
+####################################################################
+########################## CALLBACKS ###############################
 @app.callback(
     Output("the-table", "columns"),
     Output("the-table", "data"),
+    Output("the-table", "style_data_conditional"),
     Input("dummy-div","children")
 )
 def table_update(dummy):
     game = game_decoder(session["game"])
-    df = game.get_players_dataframe()
+    df = game.get_players_dataframe()[json.load(open("./data/col_order.json"))]
 
     cols = []
     for col in df.columns:
@@ -122,7 +248,19 @@ def table_update(dummy):
             cols.append({'name':col, 'id':col, 'editable':False, 'type': 'numeric'})
 
     data = df.to_dict(orient='records')
-    return cols, data
+
+
+    style_data_conditional=[
+        {
+            'if': {
+                'filter_query': '{{pid}} = {}'.format(game.round_player_pid),
+            },
+            'backgroundColor': '#FF4136',
+            'color': 'white'
+        },
+    ]
+
+    return cols, data, style_data_conditional
 
 @app.callback(
     Output("market-table", "columns"),
@@ -136,14 +274,14 @@ def market_update(dummy):
     data = df.to_dict(orient='records')
     return cols, data
 
-@app.callback(
-    Output("player-list", "children"),
-    Input("dummy-div","children")
-)
-def list_update(dummy):
-    game = game_decoder(session["game"])
-    list_grp = [dbc.ListGroupItem(player.name, active=True) if game.round_player_pid == player.pid else dbc.ListGroupItem(player.name) for player in game.players.values()]
-    return list_grp
+# @app.callback(
+#     Output("player-list", "children"),
+#     Input("dummy-div","children")
+# )
+# def list_update(dummy):
+#     game = game_decoder(session["game"])
+#     list_grp = [dbc.ListGroupItem(player.name, active=True) if game.round_player_pid == player.pid else dbc.ListGroupItem(player.name) for player in game.players.values()]
+#     return list_grp
 
 @app.callback(
     Output("dummy-div","children", allow_duplicate=True),
@@ -156,86 +294,10 @@ def next_player(n_clicks):
     game.go_to_next_player()
     session["game"] = game.serialize()
 
-    return "Update"
+    return None
 
 @app.callback(
-    Output("alert-container","children", allow_duplicate=True),
     Output("dummy-div","children", allow_duplicate=True),
-    Input("three-button","n_clicks"),
-    prevent_initial_call=True
-)
-def three_big(n_clicks):
-
-    game = game_decoder(session["game"])
-
-    if game.round_player.three_big_used:
-        return dbc.Alert("Three Big is used. Can not use it right now.", color='danger'), "Three Big"
-    else:
-        game.round_player.three_big(game,"Win")
-        session["game"] = game.serialize()
-        return dbc.Alert("Three Big is used successfully"), "Three Big"
-
-@app.callback(
-    Output("alert-container","children", allow_duplicate=True),
-    Output("modal-1","is_open"),
-    Output("modal-body","children", allow_duplicate=True),
-    Input("attack-button","n_clicks"),
-    State("modal-1","is_open"),
-    prevent_initial_call=True
-)
-def attack(n_clicks, is_open):
-    game = game_decoder(session["game"])
-
-    body = [
-        dbc.InputGroup([
-            dbc.InputGroupText("Target 🎯"),
-            dbc.Select(
-                id="attack-target-select",
-                options=[{"label": v.name, "value": k} for k, v in game.players.items()],
-            )
-        ]),
-        final_attack_button
-    ]
-
-    return dbc.Alert("Attacking", color='danger'), not is_open, body
-
-@app.callback(
-    Output("modal-body","children", allow_duplicate=True),
-    Input("final-attack-button","n_clicks"),
-    prevent_initial_call=True
-)
-def attack_final(n_clicks):
-    game = game_decoder(session["game"])
-
-    body = [
-        dbc.Row(
-            [
-                dbc.Col(attack_win),
-                dbc.Col(attack_lose)
-            ]
-        )
-    ]
-
-    return body
-
-
-
-@app.callback(
-    Output("alert-container","children", allow_duplicate=True),
-    Input("attack-modal-button","n_clicks"),
-    prevent_initial_call=True
-)
-def attack(n_clicks):
-    return dbc.Alert("Attacking", color='danger'), Tr
-
-
-
-
-
-
-
-@app.callback(
-    Output('saved-alert', 'is_open'),
     [
         Input('the-table', 'data'),
         Input('the-table', 'columns')
@@ -254,12 +316,155 @@ def update_game_from_table(rows, columns):
     
     session["game"] = game.serialize()
 
+    return None
+####################################################################
+####################################################################
+
+
+
+####################################################################
+########################## THREE BIG ###############################
+@app.callback(
+    Output("alert-container","children", allow_duplicate=True),
+    Output("dummy-div","children", allow_duplicate=True),
+    Input("three-button","n_clicks"),
+    prevent_initial_call=True
+)
+def three_big(n_clicks):
+
+    game = game_decoder(session["game"])
+
+    if game.round_player.three_big_used:
+        return dbc.Alert("Three Big is used. Can not use it right now.", color='danger'), None
+    else:
+        game.round_player.three_big(game,"Win")
+        session["game"] = game.serialize()
+        return dbc.Alert("Three Big is used successfully"), None
+####################################################################
+####################################################################
+
+
+
+#################################################################
+########################## ATTACK ###############################
+@app.callback(
+    Output("alert-container","children", allow_duplicate=True),
+    Output("attack-collapse","is_open"),
+    Output("attack-target-select","options", allow_duplicate=True),
+    Input("attack-button","n_clicks"),
+    State("attack-collapse","is_open"),
+    prevent_initial_call=True
+)
+def attack(n_clicks, is_open):
+    game = game_decoder(session["game"])
+
+    options=[{"label": v.name, "value": int(k)} for k, v in game.players.items() if game.round_player_pid != int(k)]
+    bot_options = [{"label": v.name, "value": int(k)} for k, v in game.bots.items()]
+    options = options + bot_options
+    return dbc.Alert("Attacking", color='danger'), not is_open, options
+
+@app.callback(
+    Output("win-lose-collapse","is_open"),
+    Input("final-attack-button","n_clicks"),
+    prevent_initial_call=True
+)
+def attack_final(n_clicks):
     return True
 
 
 @app.callback(
-    Input('market-table', 'selected_rows'),
+    Output("alert-container","children", allow_duplicate=True),
+    Output("attack-collapse","is_open", allow_duplicate=True),
+    Output("win-lose-collapse","is_open", allow_duplicate=True),
+    [Input("attack-win-btn", "n_clicks"),
+    Input("attack-lose-btn", "n_clicks")],
+    State("attack-target-select", "value"),
     prevent_initial_call=True
 )
-def market_select(ids):
-    print(ids)
+def win_lose(win_clicks, lose_clicks, target):
+    game = game_decoder(session["game"])
+    target_player = {**game.players, **game.bots}[int(target)]
+
+    trigger = callback_context.triggered[0]
+    button_name = trigger["prop_id"].split(".")[0]
+
+    if button_name == "attack-win-btn":
+        game.round_player.attack(game, target_player, "WIN")
+    
+    elif button_name == "attack-lose-btn":
+        game.round_player.attack(game, target_player, "LOSE")
+
+    session["game"] = game.serialize()
+
+
+    return dbc.Alert("Status", color='danger'), False, False
+##############################################################
+##############################################################
+
+
+
+################################################################
+########################## MONEY ###############################
+@app.callback(
+    Output("alert-container","children", allow_duplicate=True),
+    Output("transfer-collapse","is_open", allow_duplicate=True),
+    Output("transfer-target-select","options", allow_duplicate=True),
+    Input("transfer-button","n_clicks"),
+    State("transfer-collapse","is_open"),
+    prevent_initial_call=True
+)
+def transfer(n_clicks, is_open):
+    game = game_decoder(session["game"])
+
+    options=[{"label": v.name, "value": int(k)} for k, v in game.players.items() if game.round_player_pid != int(k)]
+    bot_options = [{"label": v.name, "value": int(k)} for k, v in game.bots.items()]
+    options = options + bot_options
+    return dbc.Alert("Transfering Money", color='success'), not is_open, options
+
+@app.callback(
+    Output("alert-container","children", allow_duplicate=True),
+    Output("transfer-collapse","is_open", allow_duplicate=True),
+    Output("dummy-div","children", allow_duplicate=True),
+    Input("send-button","n_clicks"),
+    State("transfer-target-select", "value"),
+    State("transfer-amount", "value"),
+    prevent_initial_call=True
+)
+def send_money(n_clicks, target, amount):
+    game = game_decoder(session["game"])
+    target_player = {**game.players, **game.bots}[int(target)]
+
+    try:
+        game.round_player.transfer(game, target_player, int(amount))
+        session["game"] = game.serialize()
+        return dbc.Alert("Successfully transferred", color='success'), False, None
+    except Exception as e:
+        return dbc.Alert(str(e), color='warning'), False, None
+##############################################################
+##############################################################
+
+
+
+##############################################################
+########################## BUY ###############################
+@app.callback(
+    Output("alert-container","children", allow_duplicate=True),
+    Output('market-table', 'selected_rows'),
+    Output("dummy-div","children", allow_duplicate=True),
+    Input('buy-button','n_clicks'),
+    State('market-table', 'selected_rows'),
+    prevent_initial_call=True
+)
+def market_select(n_clicks, ids):
+    game = game_decoder(session["game"])
+
+    try:
+        game.round_player.buy(game, ids[0])
+        session["game"] = game.serialize()
+        return dbc.Alert("Successfully bought", color='success'), [], None
+    except Exception as e:
+        return dbc.Alert(str(e), color='warning'), [], None
+##############################################################
+##############################################################
+
+

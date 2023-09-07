@@ -38,10 +38,10 @@ class Player:
     def buy(self, game, market_id):
         item = game.market[market_id]
         item_name = item["name"]
-        item_cost = item["price"]
+        item_price = item["price"]
         
-        if self.money >= item_cost:
-            self.money -= item_cost
+        if self.money >= item_price:
+            self.money -= item_price
             game.log_action(
                 player = self,
                 action = "buy",
@@ -50,6 +50,9 @@ class Player:
                 cost = item_price,
                 target = None
             )
+        
+            if item_name == "donanma":
+                self.hasNavy = True
             
         else:
             raise Exception(f"The player {self.name} does not have enough money.")
@@ -62,7 +65,7 @@ class Player:
                 subtype = status,
                 description = f'Player {self.name} attacked to {target.name}. Result of the attack is {status}.',
                 cost = None,
-                target = target.id
+                target = target.pid
             )
         elif isinstance(target, str):
             game.log_action(
@@ -93,7 +96,7 @@ class Player:
         if self.money >= amount:
 
             self.money -= amount
-            self.target += amount
+            target.money += amount
 
             game.log_action(
                 player = self,
@@ -101,7 +104,7 @@ class Player:
                 subtype = "To Player",
                 description = f'Player {self.name} transferred {amount} to {target.name}.',
                 cost = amount,
-                target = target.id
+                target = target.pid
             )
         else:
             raise Exception(f"The player {self.name} does not have enough money.")

@@ -15,14 +15,15 @@ start_card = dbc.Card(
         [
             html.H1("Start a game", className="card-title"),
             html.P("Brace yourself, brave adventurers, for this game demands cunning, courage, and a heart unyielding to challenges. Do you dare to embark on this epic journey of conquest?"),
+            html.Hr(),
             dbc.Row([
                 dbc.Col(
-                    dbc.Button(id="create", children="Create a game", color="danger" ,className="btn-lg d-grid gap-2"),
+                    dbc.Button(id="create", children="Create a game", color="danger" ,className="btn-lg col-12"),
                     width = 6,
                     className = "text-center"
                 ),
                 dbc.Col(
-                    dbc.Button(id="load", children="Load a game", color="success", className="btn-lg d-grid gap-2"),
+                    dbc.Button(id="load", children="Load a game", color="success", className="btn-lg col-12"),
                     width = 6,
                     className = "text-center"
                 )
@@ -273,6 +274,7 @@ def game_start(player_clicks, coal_clicks, factory_clicks):
 )
 def start(n_clicks):
     game = game_decoder(session["game"])
+    game.add_bot("The Game")
     game.start_game()
     session["game"] = game.serialize()
     return None
