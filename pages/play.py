@@ -11,7 +11,7 @@ from app import app
 from iv.game import TheGame, game_decoder
 from iv.player import Player, player_decoder
 
-NUM_COLS = ["money", "mines", "factories", "price"]
+NUM_COLS = ["money", "mines", "factories", "price", "navy"]
 
 # def refresh(game: TheGame):
 
@@ -237,6 +237,7 @@ layout = html.Div([
 )
 def table_update(dummy):
     game = game_decoder(session["game"])
+    game.show_players()
     df = game.get_players_dataframe()[json.load(open("./data/col_order.json"))]
 
     cols = []
@@ -269,7 +270,7 @@ def table_update(dummy):
 )
 def market_update(dummy):
     game = game_decoder(session["game"])
-    df = pd.DataFrame(game.market)
+    df = pd.DataFrame.from_records(game.serialize()["market"]["items"])[["id", "name", "price"]]
     cols = [{'name':col, 'id':col} for col in df]
     data = df.to_dict(orient='records')
     return cols, data
@@ -459,7 +460,9 @@ def market_select(n_clicks, ids):
     game = game_decoder(session["game"])
 
     try:
-        game.round_player.buy(game, ids[0])
+        item_id = list(game.market.items.values())[ids[0]].id
+        game.buy(game.round_player, item_id)
+        # game.round_player.buy(game, ids[0])
         session["game"] = game.serialize()
         return dbc.Alert("Successfully bought", color='success'), [], None
     except Exception as e:

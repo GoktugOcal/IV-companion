@@ -28,7 +28,7 @@ class Player:
         central=0,
         harbor=0,
 
-        hasNavy=False,
+        navy=0,
         money=0,
         next_player_pid=None,
 
@@ -50,7 +50,7 @@ class Player:
         self.central = central #
         self.harbor = harbor #
 
-        self.hasNavy = hasNavy
+        self.navy = navy
         self.money = money
         self.next_player_pid = next_player_pid
 
@@ -67,29 +67,29 @@ class Player:
     # def reverse_action(self):
     #     pass
 
-    def buy(self, game, market_id):
-        item = game.market[market_id]
-        item_name = item["name"]
-        item_price = item["price"]
+    # def buy(self, game, market_id):
+    #     item = game.market[market_id]
+    #     item_name = item["name"]
+    #     item_price = item["price"]
         
-        if self.money >= item_price:
-            self.money -= item_price
-            game.case_money += item_price
+    #     if self.money >= item_price:
+    #         self.money -= item_price
+    #         game.case_money += item_price
             
-            game.log_action(
-                player = self,
-                action = "buy",
-                subtype = item_name,
-                description = f'Player {self.name} bought {item_name}.',
-                cost = item_price,
-                target = None
-            )
+    #         game.log_action(
+    #             player = self,
+    #             action = "buy",
+    #             subtype = item_name,
+    #             description = f'Player {self.name} bought {item_name}.',
+    #             cost = item_price,
+    #             target = None
+    #         )
         
-            if item_name == "donanma":
-                self.hasNavy = True
+    #         if item_name == "donanma":
+    #             self.navy += 1
             
-        else:
-            raise Exception(f"The player {self.name} does not have enough money.")
+    #     else:
+    #         raise Exception(f"The player {self.name} does not have enough money.")
 
     def attack(self, game, target, status):
         if isinstance(target, Player):

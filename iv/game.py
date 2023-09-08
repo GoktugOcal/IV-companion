@@ -7,6 +7,8 @@ from json import JSONEncoder
 from copy import deepcopy
 
 from iv.player import Player, player_decoder
+from iv.market import Market, market_decoder, MarketItem
+
 
 class TheGame:
     def __init__(
@@ -16,7 +18,10 @@ class TheGame:
         history=None,
         bots=None,
         coal_gain = None,
-        factory_gain = None,
+        factory_gain=None,
+        central_gain=None,
+        capital_gain=None,
+        empire_gain=None,
         round=None,
         round_player=None,
         round_player_pid=None,
@@ -51,13 +56,16 @@ class TheGame:
 
             self.coal_gain = coal_gain
             self.factory_gain = factory_gain
+            self.central_gain=central_gain
+            self.capital_gain=capital_gain
+            self.empire_gain=empire_gain
 
             self.game_file = game_file
             self.players_file = players_file
             self.history_file = history_file
             self.market_file = market_file
 
-            self.market = market
+            self.market = market_decoder(market)
             self.case_money = case_money
 
             self.latest_save_time = latest_save_time
@@ -76,9 +84,13 @@ class TheGame:
                 self.game_file = os.path.join(".", "games", self.name, "game.json")
                 self.players_file = os.path.join(".", "games", self.name, "players.json")
                 self.history_file = os.path.join(".", "games", self.name, "history.json")
-                self.market_file = os.path.join(".", "market.json")
+                self.market_file = os.path.join(".", "market.csv")
                 
-                self.market = json.loads(pd.read_csv("market.csv",delimiter=";").to_json(orient="records"))
+                # self.market = json.loads(pd.read_csv("market.csv",delimiter=";").to_json(orient="records"))
+
+                market_json = json.loads(pd.read_csv(self.market_file, delimiter=";").to_json(orient="records", force_ascii=False))
+                self.market = Market(market_json)
+
                 self.case_money = 0
                 
             else:
@@ -90,6 +102,18 @@ class TheGame:
     
     def set_factory_gain(self, gain):
         self.factory_gain = gain
+        self.save()
+
+    def set_central_gain(self, gain):
+        self.central_gain = gain
+        self.save()
+
+    def set_capital_gain(self, gain):
+        self.capital_gain = gain
+        self.save()
+    
+    def set_empire_gain(self, gain):
+        self.empire_gain = gain
         self.save()
     
     def add_player(self, name, bot=False):
@@ -145,6 +169,15 @@ class TheGame:
             target = None
         )
     
+    def buy(self, player, item_id):
+        enough_money, adequate = self.market.purchase(self, player, item_id)
+
+        if not enough_money:
+            raise Exception(f"The player {player.name} does not have enough money.")
+        elif not adequate:
+            raise Exception(f"The player {player.name} does not meet the requirements: {self.market.items[item_id].requirement}")
+                
+
     def save(self):
 
         self.latest_save_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
@@ -244,7 +277,13 @@ class TheGame:
         print("Next round!!")
         self.round += 1
         for player in list(self.players.values()):
-            player.money += player.mines*self.coal_gain + player.factories*self.factory_gain # Tour reward?
+            player.money += \
+                (player.mines * self.coal_gain) + \
+                (bool(player.mines) * player.factories * self.factory_gain) + \
+                (bool(player.mines) * bool(player.factories) * player.factories * self.factory_gain) + \
+                (player.central * self.central_gain) + \
+                (bool(player.capital) * self.capital_gain) + \
+                (bool(player.empire) * self.empire_gain)
 
     def serialize(self):
         init_serial = {attr: getattr(self, attr) for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__") and not attr == "game"}
@@ -261,6 +300,9 @@ class TheGame:
                 serialized[k] = players_list
             
             elif isinstance(v, Player):
+                serialized[k] = v.serialize()
+            
+            elif isinstance(v, Market):
                 serialized[k] = v.serialize()
 
         return serialized

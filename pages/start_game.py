@@ -154,6 +154,7 @@ def game_name_set(n_clicks, game_name):
 
         game = TheGame(name = game_name)
         session["game"] = game.serialize()
+        print(json.dumps(session["game"], indent=2))
 
         res = html.Div(
             [
@@ -169,10 +170,10 @@ def game_name_set(n_clicks, game_name):
                 html.Hr(),
                 html.Div(
                     [   
-                        html.P("Gain from coals per round"),
+                        html.P("Gain from mines per round"),
                         dbc.InputGroup(
                             [
-                                dbc.Input(id="coal-gain-inp", type="number", placeholder="Coal Gain"),
+                                dbc.Input(id="coal-gain-inp", type="number", placeholder="Mine Gain"),
                                 dbc.Button("Submit", id="coal-btn", n_clicks=0),
                             ]
                         ),
@@ -189,6 +190,42 @@ def game_name_set(n_clicks, game_name):
                             ]
                         ),
                         dbc.FormText(id="factory-mess", children = "Gain has not set."),
+                    ]
+                ),
+                html.Div(
+                    [
+                        html.P("Gain from central per round"),
+                        dbc.InputGroup(
+                            [
+                                dbc.Input(id="central-gain-inp", type="number", placeholder="Central Gain"),
+                                dbc.Button("Submit", id="central-btn", n_clicks=0),
+                            ]
+                        ),
+                        dbc.FormText(id="central-mess", children = "Gain has not set."),
+                    ]
+                ),
+                html.Div(
+                    [
+                        html.P("Gain from capital per round"),
+                        dbc.InputGroup(
+                            [
+                                dbc.Input(id="capital-gain-inp", type="number", placeholder="Capital Gain"),
+                                dbc.Button("Submit", id="capital-btn", n_clicks=0),
+                            ]
+                        ),
+                        dbc.FormText(id="capital-mess", children = "Gain has not set."),
+                    ]
+                ),
+                html.Div(
+                    [
+                        html.P("Gain from empire per round"),
+                        dbc.InputGroup(
+                            [
+                                dbc.Input(id="empire-gain-inp", type="number", placeholder="Empire Gain"),
+                                dbc.Button("Submit", id="empire-btn", n_clicks=0),
+                            ]
+                        ),
+                        dbc.FormText(id="empire-mess", children = "Gain has not set."),
                     ]
                 ),
                 html.Hr(),
@@ -248,6 +285,48 @@ def factory_btn(n_clicks, gain):
     session["game"] = game.serialize()
 
     return f"Factory gain has been set to {gain}"
+
+@app.callback(
+    Output('central-mess', 'children'),
+    Input('central-btn', 'n_clicks'),
+    State('central-gain-inp', 'value'),
+    prevent_initial_call=True
+    )
+def central_btn(n_clicks, gain):
+
+    game = game_decoder(session["game"])
+    game.set_central_gain(gain)
+    session["game"] = game.serialize()
+
+    return f"Central gain has been set to {gain}"
+
+@app.callback(
+    Output('capital-mess', 'children'),
+    Input('capital-btn', 'n_clicks'),
+    State('capital-gain-inp', 'value'),
+    prevent_initial_call=True
+    )
+def empire_btn(n_clicks, gain):
+
+    game = game_decoder(session["game"])
+    game.set_capital_gain(gain)
+    session["game"] = game.serialize()
+
+    return f"Capital gain has been set to {gain}"
+
+@app.callback(
+    Output('empire-mess', 'children'),
+    Input('empire-btn', 'n_clicks'),
+    State('empire-gain-inp', 'value'),
+    prevent_initial_call=True
+    )
+def empire_btn(n_clicks, gain):
+
+    game = game_decoder(session["game"])
+    game.set_empire_gain(gain)
+    session["game"] = game.serialize()
+
+    return f"Empire gain has been set to {gain}"
 
 
 @app.callback(

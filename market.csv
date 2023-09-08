@@ -1,3 +1,26 @@
-﻿id;name;price
-1;donanma;400
-2;kozmetik;200
+﻿id;name;price;effect;requirement
+1;+1 büyük;500;;three_big_used
+2;sırasız 3 büyük;1250;three_big_used;
+3;çift saldırı;1000;;
+4;yedek saldırı;4000;;
+5;donanma;1200;navy;
+6;s. donanma;1600;;navy
+7;sur (serçe);600;;
+8;sur topu;400;;
+9;gemi topu;800;;
+10;zincir (serçe);1500;;
+11;zincir kırıcı;300;;
+12;bota kayıpsız;650;;
+13;i. bota kayıpsız;1100;;
+14;bota uçak;1000;;
+15;c4 (köprü);750;;
+16;köprü onarımı;1100;;
+17;beylik;350;principality;
+18;devlet;850;state;principality
+19;imparatorluk;2500;empire;state
+20;ilk bayrak;250;;state
+21;bayrak rengi;750;;state
+22;ekstra bayrak;200;;
+23;slogan;750;;
+24;başkent;800;capital;
+25;1 tur kalkan;1750;;

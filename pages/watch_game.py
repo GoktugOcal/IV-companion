@@ -107,10 +107,6 @@ def refresh(n_clicks):
         ]
     )
 
-
-
-
-
 def render_player_table(game):
 
     df = game.get_players_dataframe()[json.load(open("./data/col_order.json"))]
@@ -134,7 +130,8 @@ def render_player_table(game):
         style_data_conditional=style_data_conditional)
 
 def render_market_table(game):
-    df = pd.DataFrame(game.market)
+
+    df = pd.DataFrame.from_records(game.serialize()["market"]["items"])[["id", "name", "price", "requirement"]]
     cols = [{'name':col, 'id':col} for col in df]
     data = df.to_dict(orient='records')
     return dash_table.DataTable(
