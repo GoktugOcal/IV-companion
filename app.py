@@ -14,10 +14,11 @@ app = DashProxy(__name__,
     server = server,
     # url_base_pathname="/goktug/",
     suppress_callback_exceptions=True,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.FLATLY],
     transforms = [
         NoOutputTransform()
     ]
     )
+app.title = "Isgal Vakti"
 
 # server = app.server

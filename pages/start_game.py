@@ -33,11 +33,14 @@ start_card = dbc.Card(
     )
 )
 
+start_img = html.Img(src="./assets/img/iv_start.jpg", style={'width':'100%', "margin-bottom":"20px"})
+
 layout = html.Div([
     dbc.Row([
         dbc.Col(className="col-1 col-lg-4"),
         dbc.Col(
             [
+                start_img,
                 start_card,
                 html.Div(id="config"),
                 html.Div(id="load-container")

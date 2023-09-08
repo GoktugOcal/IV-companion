@@ -8,8 +8,12 @@ from iv.player import Player
 
 app.layout = html.Div([
     dbc.NavbarSimple(
+        children = [
+            dbc.NavItem(dbc.NavLink("Start a game", href="/start_game")),
+            dbc.NavItem(dbc.NavLink("Watch a game", href="/watch_game"))
+        ],
         brand="İşgal Vakti",
-        brand_href="#",
+        brand_href="/",
         color="primary",
         dark=True
         ),    

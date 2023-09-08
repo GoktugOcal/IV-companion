@@ -32,10 +32,12 @@ welcome_card = dbc.Card(
     )
 )
 
+welcome_img = html.Img(src="./assets/img/iv_welcome_2.jpg", style={'width':'100%', "margin-bottom":"20px"})
+
 layout = html.Div([
     dbc.Row([
         dbc.Col(className="col-1 col-lg-4"),
-        dbc.Col(welcome_card, className="col-10 col-lg-4"),
+        dbc.Col([welcome_img, welcome_card], className="col-10 col-lg-4"),
         dbc.Col(className="col-1 col-lg-4")
     ],
     style={

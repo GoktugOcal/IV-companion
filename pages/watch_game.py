@@ -11,6 +11,11 @@ from app import app
 from iv.game import TheGame, game_decoder
 from iv.player import Player, player_decoder
 
+
+start_img = html.Img(src="./assets/img/iv_start.jpg", style={'width':'100%', "margin-bottom":"20px"})
+market_img = html.Img(src="./assets/img/iv_market.jpg", style={'width':'100%', "margin-bottom":"20px"})
+
+
 layout = dbc.Container([
     dbc.Row(
         [
@@ -21,6 +26,7 @@ layout = dbc.Container([
         ]
         ),
     ],
+    className="col-12 col-lg-4",
     style={
         "padding-top" : "10vh"
     })
@@ -80,9 +86,11 @@ def load_game(n_clicks, path):
 
     return html.Div(
         [   
+            start_img,
             html.H1("Player Table"),
             render_player_table(game),
             html.Hr(),
+            market_img,
             html.H2("Market"),
             render_market_table(game),
         ]
@@ -99,9 +107,11 @@ def refresh(n_clicks):
 
     return html.Div(
         [   
+            start_img,
             html.H1("Player Table"),
             render_player_table(game),
             html.Hr(),
+            market_img,
             html.H2("Market"),
             render_market_table(game),
         ]

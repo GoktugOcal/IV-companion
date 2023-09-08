@@ -149,6 +149,9 @@ transfer_collape = dbc.Collapse(
     is_open = False
 )
 
+start_img = html.Img(src="./assets/img/iv_start.jpg", style={'width':'100%', "margin-bottom":"20px"})
+market_img = html.Img(src="./assets/img/iv_market.jpg", style={'width':'100%', "margin-bottom":"20px"})
+
 
 #######################################################################
 ################################ Rows #################################
@@ -210,9 +213,9 @@ layout = html.Div([
         html.Div(id='alert-container', children=[welcome_alert]),
         dbc.Row(
             [
-                dbc.Col([round_list_container, player_table, html.Hr(), saved_alert, button_functions, html.Hr()], className="col-12 col-lg-7"),
+                dbc.Col([start_img, round_list_container, player_table, html.Hr(), saved_alert, button_functions, html.Hr()], className="col-12 col-lg-7"),
                 dbc.Col([html.Div()], className="col-12 col-lg-1"),
-                dbc.Col([buy_button, dash_table.DataTable(id = "market-table", row_selectable='single')], className="col-12 col-lg-4")
+                dbc.Col([market_img, buy_button, dash_table.DataTable(id = "market-table", row_selectable='single')], className="col-12 col-lg-4")
             ]
         ),
         modal_1
