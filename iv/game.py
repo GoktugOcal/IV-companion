@@ -285,6 +285,9 @@ class TheGame:
                 (bool(player.capital) * self.capital_gain) + \
                 (bool(player.empire) * self.empire_gain)
 
+        if player.harbor and player.navy == 0:
+            player.navy = 1
+
     def serialize(self):
         init_serial = {attr: getattr(self, attr) for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__") and not attr == "game"}
         serialized = deepcopy(init_serial)
