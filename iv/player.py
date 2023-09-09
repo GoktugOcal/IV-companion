@@ -146,10 +146,10 @@ class Player:
             else:
                 raise Exception(f"The player {self.name} does not have enough money.")
         elif amount < 0:
-            if target.money >= amount:
+            if target.money >= abs(amount):
                 
                 target.money -= amount * 0.8
-                player.money += int(amount * 0.8)
+                self.money += int(amount * 0.8)
                 game.case_money += int(amount * 0.2)
     
                 game.log_action(
@@ -161,7 +161,7 @@ class Player:
                     target = target.pid
                 )
             else:
-                raise Exception(f"The player {self.name} does not have enough money.")
+                raise Exception(f"The player {target.name} does not have enough money.")
 
         else:
             raise Exception(f"No transfer happened.")
