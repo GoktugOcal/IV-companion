@@ -128,8 +128,8 @@ attack_collapse = dbc.Collapse(
         win_lose_collapse
     ],
     id="attack-collapse",
-    is_open=False,
-    dimension="width"
+    is_open=False
+    # dimension="width"
 )
 
 
