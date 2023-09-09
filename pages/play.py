@@ -191,8 +191,14 @@ button_functions = html.Div(
 )
 
 
-
 player_table = dash_table.DataTable(id = "the-table", style_table={'overflowX': 'scroll'})
+
+style_data_conditional=[
+        {
+            'if': {'row_index': 'odd'},
+            'backgroundColor': 'rgb(220, 220, 220)',
+        }
+    ]
 
 ##############################
 ##############################
@@ -215,7 +221,7 @@ layout = html.Div([
             [
                 dbc.Col([start_img, round_list_container, player_table, html.Hr(), saved_alert, button_functions, html.Hr()], className="col-12 col-lg-7"),
                 dbc.Col([html.Div()], className="col-12 col-lg-1"),
-                dbc.Col([market_img, buy_button, dash_table.DataTable(id = "market-table", row_selectable='single')], className="col-12 col-lg-4")
+                dbc.Col([market_img, buy_button, dash_table.DataTable(id = "market-table", row_selectable='single', style_data={'textAlign': 'left'}, style_data_conditional=style_data_conditional)], className="col-12 col-lg-4")
             ]
         ),
         modal_1
