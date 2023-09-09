@@ -280,10 +280,10 @@ class TheGame:
             player.money += \
                 (player.mines * self.coal_gain) + \
                 (bool(player.mines) * player.factories * self.factory_gain) + \
-                (bool(player.mines) * bool(player.factories) * player.factories * self.factory_gain) + \
-                (player.central * self.central_gain) + \
+                (bool(player.mines) * bool(player.factories) * player.central * self.central_gain) + \
                 (bool(player.capital) * self.capital_gain) + \
                 (bool(player.empire) * self.empire_gain)
+                #(player.central * self.central_gain) + \
 
         if player.harbor and player.navy == 0:
             player.navy = 1
