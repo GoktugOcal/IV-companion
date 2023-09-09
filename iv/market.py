@@ -14,7 +14,8 @@ class Market:
             player.money -= item.price
             game.case_money += item.price
 
-            item.affect(player)
+            if item.effect:
+                item.affect(player)
             
             game.log_action(
                 player = player,
