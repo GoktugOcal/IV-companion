@@ -127,23 +127,45 @@ class Player:
             )
 
     def transfer(self, game, target, amount):
-        if self.money >= amount:
 
-            self.money -= amount
-            target.money += int(amount * 0.8)
-            game.case_money += int(amount * 0.2)
-
-            game.log_action(
-                player = self,
-                action = "transfer",
-                subtype = "To Player",
-                description = f'Player {self.name} transferred {amount} to {target.name}.',
-                cost = amount,
-                target = target.pid
-            )
-        else:
-            raise Exception(f"The player {self.name} does not have enough money.")
+        if amount > 1:
+            if self.money >= amount:
     
+                self.money -= amount * 0.8
+                target.money += int(amount * 0.8)
+                game.case_money += int(amount * 0.2)
+    
+                game.log_action(
+                    player = self,
+                    action = "transfer",
+                    subtype = "To Player",
+                    description = f'Player {self.name} transferred {amount} to {target.name}.',
+                    cost = amount,
+                    target = target.pid
+                )
+            else:
+                raise Exception(f"The player {self.name} does not have enough money.")
+        elif amount < 0:
+            if target.money >= amount:
+                
+                target.money -= amount * 0.8
+                player.money += int(amount * 0.8)
+                game.case_money += int(amount * 0.2)
+    
+                game.log_action(
+                    player = self,
+                    action = "transfer",
+                    subtype = "To Player",
+                    description = f'Player {self.name} transferred {amount} to {target.name}.',
+                    cost = amount,
+                    target = target.pid
+                )
+            else:
+                raise Exception(f"The player {self.name} does not have enough money.")
+
+        else:
+            raise Exception(f"No transfer happened.")
+
     def serialize(self):
         # return json.dumps(self.__dict__, default=lambda obj: obj.__dict__, indent=4, ensure_ascii=False)
         return {attr: getattr(self, attr) for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__") and not attr == "game"}
