@@ -285,8 +285,8 @@ class TheGame:
                 (bool(player.empire) * self.empire_gain)
                 #(player.central * self.central_gain) + \
 
-        if player.harbor and player.navy == 0:
-            player.navy = 1
+            if player.harbor and player.navy == 0:
+                player.navy = 1
 
     def serialize(self):
         init_serial = {attr: getattr(self, attr) for attr in dir(self) if not callable(getattr(self, attr)) and not attr.startswith("__") and not attr == "game"}
